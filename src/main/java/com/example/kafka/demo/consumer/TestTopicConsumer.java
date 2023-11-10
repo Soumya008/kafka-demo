@@ -1,6 +1,5 @@
 package com.example.kafka.demo.consumer;
 
-import com.example.kafka.demo.model.User;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

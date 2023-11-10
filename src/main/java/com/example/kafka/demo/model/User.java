@@ -13,7 +13,7 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class User extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -3653403384216275156L;
+  private static final long serialVersionUID = 2188272958001741487L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"com.example.kafka.demo.model\",\"fields\":[{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"avro.java.string\":\"String\"},{\"name\":\"age\",\"type\":\"int\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
@@ -51,7 +51,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     return DECODER.decode(b);
   }
 
-  @Deprecated public String name;
+  @Deprecated public java.lang.String name;
   @Deprecated public int age;
 
   /**
@@ -66,14 +66,14 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
    * @param name The new value for name
    * @param age The new value for age
    */
-  public User(String name, Integer age) {
+  public User(java.lang.String name, java.lang.Integer age) {
     this.name = name;
     this.age = age;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
-  public Object get(int field$) {
+  public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return name;
     case 1: return age;
@@ -83,10 +83,10 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
 
   // Used by DatumReader.  Applications should not call.
   @SuppressWarnings(value="unchecked")
-  public void put(int field$, Object value$) {
+  public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: name = (String)value$; break;
-    case 1: age = (Integer)value$; break;
+    case 0: name = (java.lang.String)value$; break;
+    case 1: age = (java.lang.Integer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -95,7 +95,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
    * Gets the value of the 'name' field.
    * @return The value of the 'name' field.
    */
-  public String getName() {
+  public java.lang.String getName() {
     return name;
   }
 
@@ -103,7 +103,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
    * Sets the value of the 'name' field.
    * @param value the value to set.
    */
-  public void setName(String value) {
+  public void setName(java.lang.String value) {
     this.name = value;
   }
 
@@ -111,7 +111,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
    * Gets the value of the 'age' field.
    * @return The value of the 'age' field.
    */
-  public Integer getAge() {
+  public java.lang.Integer getAge() {
     return age;
   }
 
@@ -119,7 +119,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
    * Sets the value of the 'age' field.
    * @param value the value to set.
    */
-  public void setAge(Integer value) {
+  public void setAge(java.lang.Integer value) {
     this.age = value;
   }
 
@@ -155,7 +155,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<User>
     implements org.apache.avro.data.RecordBuilder<User> {
 
-    private String name;
+    private java.lang.String name;
     private int age;
 
     /** Creates a new Builder */
@@ -199,7 +199,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
       * Gets the value of the 'name' field.
       * @return The value.
       */
-    public String getName() {
+    public java.lang.String getName() {
       return name;
     }
 
@@ -208,7 +208,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public com.example.kafka.demo.model.User.Builder setName(String value) {
+    public com.example.kafka.demo.model.User.Builder setName(java.lang.String value) {
       validate(fields()[0], value);
       this.name = value;
       fieldSetFlags()[0] = true;
@@ -238,7 +238,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
       * Gets the value of the 'age' field.
       * @return The value.
       */
-    public Integer getAge() {
+    public java.lang.Integer getAge() {
       return age;
     }
 
@@ -277,10 +277,10 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     public User build() {
       try {
         User record = new User();
-        record.name = fieldSetFlags()[0] ? this.name : (String) defaultValue(fields()[0]);
-        record.age = fieldSetFlags()[1] ? this.age : (Integer) defaultValue(fields()[1]);
+        record.name = fieldSetFlags()[0] ? this.name : (java.lang.String) defaultValue(fields()[0]);
+        record.age = fieldSetFlags()[1] ? this.age : (java.lang.Integer) defaultValue(fields()[1]);
         return record;
-      } catch (Exception e) {
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }

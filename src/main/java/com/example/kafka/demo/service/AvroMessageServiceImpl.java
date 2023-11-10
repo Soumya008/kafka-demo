@@ -1,6 +1,5 @@
 package com.example.kafka.demo.service;
 
-import com.example.kafka.demo.model.User;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import java.util.stream.IntStream;
+import com.example.kafka.demo.model.User;
 
 @Service("avroMessageService")
 @Qualifier("avroMessageService")
