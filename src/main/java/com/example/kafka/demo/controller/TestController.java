@@ -1,8 +1,11 @@
 package com.example.kafka.demo.controller;
 
+import com.example.kafka.demo.model.User;
 import com.example.kafka.demo.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +21,17 @@ import java.util.Map;
 @RequestMapping("/test")
 public class TestController {
 
-    private KafkaTemplate<String, String> kafkaTemplate;
+    @Value(value = "${spring.kafka.avro.enabled}")
+    private boolean avroEnabled;
+
     private MessageService messageService;
 
-    public TestController(KafkaTemplate<String, String> kafkaTemplate, MessageService messageService) {
-        this.kafkaTemplate = kafkaTemplate;
+    private MessageService avroMessageService;
+
+    public TestController(@Qualifier("defaultMessageService") MessageService messageService,
+                          @Qualifier("avroMessageService") MessageService avroMessageService) {
         this.messageService = messageService;
+        this.avroMessageService = avroMessageService;
     }
 
     private Logger logger = LoggerFactory.getLogger(TestController.class);
@@ -34,7 +42,17 @@ public class TestController {
         Object payload = request.get("payload");
         Date d1 = new Date();
 
-        messageService.sendFnf(topic, payload);
+        if(avroEnabled) {
+            Map<String, Object> data = (Map<String, Object>) payload;
+            User user = new User();
+            user.setAge(Integer.parseInt("" + data.get("age")));
+            user.setName("" + data.get("name"));
+            avroMessageService.sendFnf(topic, user);
+        }
+        else {
+            messageService.sendFnf(topic, payload);
+        }
+
         logger.info("Total time taken :: {} ms.", (new Date().getTime() - d1.getTime()));
 
         Map<String, Object> responseBody = new HashMap<>();
@@ -48,8 +66,16 @@ public class TestController {
         String topic = request.get("topic").toString();
         Object payload = request.get("payload");
         Date d1 = new Date();
-
-        messageService.sendSync(topic, payload);
+        if(avroEnabled) {
+            Map<String, Object> data = (Map<String, Object>) payload;
+            User user = new User();
+            user.setAge(Integer.parseInt("" + data.get("age")));
+            user.setName("" + data.get("name"));
+            avroMessageService.sendSync(topic, user);
+        }
+        else {
+            messageService.sendSync(topic, payload);
+        }
         logger.info("Total time taken :: {} ms.", (new Date().getTime() - d1.getTime()));
 
         Map<String, Object> responseBody = new HashMap<>();
@@ -63,8 +89,16 @@ public class TestController {
         String topic = request.get("topic").toString();
         Object payload = request.get("payload");
         Date d1 = new Date();
-
-        messageService.sendAsync(topic, payload);
+        if(avroEnabled) {
+            Map<String, Object> data = (Map<String, Object>) payload;
+            User user = new User();
+            user.setAge(Integer.parseInt("" + data.get("age")));
+            user.setName("" + data.get("name"));
+            avroMessageService.sendAsync(topic, user);
+        }
+        else {
+            messageService.sendAsync(topic, payload);
+        }
         logger.info("Total time taken :: {} ms.", (new Date().getTime() - d1.getTime()));
 
         Map<String, Object> responseBody = new HashMap<>();
