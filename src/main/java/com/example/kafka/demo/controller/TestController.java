@@ -1,21 +1,23 @@
 package com.example.kafka.demo.controller;
 
+import com.example.kafka.demo.model.User;
+import com.example.kafka.demo.processor.WordCountProcessor;
 import com.example.kafka.demo.service.MessageService;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.example.kafka.demo.model.User;
 
 @RestController
 @RequestMapping("/test")
@@ -28,10 +30,15 @@ public class TestController {
 
     private MessageService avroMessageService;
 
+    private StreamsBuilderFactoryBean factoryBean;
+
     public TestController(@Qualifier("defaultMessageService") MessageService messageService,
-                          @Qualifier("avroMessageService") MessageService avroMessageService) {
+                          @Qualifier("avroMessageService") MessageService avroMessageService,
+                          StreamsBuilderFactoryBean factoryBean,
+                          WordCountProcessor wordCountProcessor) {
         this.messageService = messageService;
         this.avroMessageService = avroMessageService;
+        this.factoryBean = factoryBean;
     }
 
     private Logger logger = LoggerFactory.getLogger(TestController.class);
@@ -105,5 +112,20 @@ public class TestController {
         responseBody.put("code", HttpStatus.OK.value());
         responseBody.put("status", HttpStatus.OK.name());
         return responseBody;
+    }
+
+    @GetMapping("/word-count/{word}")
+    public Long getWordCount(@PathVariable String word) {
+        KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
+        ReadOnlyKeyValueStore<String, Long> counts = kafkaStreams.store(
+                StoreQueryParameters.fromNameAndType("counts", QueryableStoreTypes.keyValueStore())
+        );
+        return counts.get(word);
+    }
+
+    @PostMapping("/word-count/publish")
+    public boolean publishWordCount(@RequestBody String word) {
+        messageService.sendSync("input-topic", word);
+        return true;
     }
 }

@@ -15,4 +15,9 @@ public class TestTopicConsumer {
     public void consumeMessage(ConsumerRecord<String, Object> record) {
         logger.info("Received Message in group test-consumer, topic test-topic is :: {}", record.value());
     }
+
+    @KafkaListener(topics = "output-topic", groupId = "test-consumer", containerFactory = "kafkaListenerContainerFactory")
+    public void consumeOutputStreamMessage(ConsumerRecord<String, Object> record) {
+        logger.info("Received Message in group test-consumer, topic output-topic is :: {}", record.value());
+    }
 }
